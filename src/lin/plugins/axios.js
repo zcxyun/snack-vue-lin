@@ -5,7 +5,7 @@ import Config from '@/config'
 import ErrorCode from '@/config/error-code'
 import store from '@/store'
 import { getToken } from '@/lin/utils/token'
-import User from '@/lin/models/user'
+import User from '@/lin/models/user'  // eslint-disable-line
 
 const config = {
   baseURL: Config.baseURL || process.env.apiUrl || '',
@@ -135,14 +135,12 @@ _axios.interceptors.response.use(async (res) => {
     }
     // 本次请求添加 params 参数：handleError 为 true，用户自己try catch，框架不做处理
     if (params && params.handleError) {
-      reject(res)
+      reject(res.data)
       return
     }
     console.log('msg', msg)
     // 本次请求添加 params 参数：showBackend 为 true, 弹出后端返回错误信息
-    if (params && params.showBackend) {
-      [message] = msg
-    } else { // 弹出前端自定义错误信息
+    if (params && params.showFrontend) {
       const errorArr = Object.entries(ErrorCode).filter(v => v[0] === error_code.toString())
       // 匹配到前端自定义的错误码
       if (errorArr.length > 0) {
@@ -152,12 +150,22 @@ _axios.interceptors.response.use(async (res) => {
           message = ErrorCode['777']
         }
       }
+    } else { // 弹出前端自定义错误信息
+      if (Object.prototype.toString.call(msg) === '[object Object]') {  // eslint-disable-line
+        Object.keys(msg).forEach((item, index) => {
+          if (index === 0) {
+            message = msg[item][0] // eslint-disable-line
+          }
+        })
+      } else {
+        message = msg
+      }
     }
     Vue.prototype.$message({
       message,
       type: 'error',
     })
-    resolve(res.data)
+    reject(res.data)
   })
 }, (error) => {
   if (!error.response) {

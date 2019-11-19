@@ -58,6 +58,7 @@ export default {
         const books = await book.getBooks()
         this.tableData = books
       } catch (error) {
+        console.log(error)
         if (error.error_code === 10020) {
           this.tableData = []
         }
