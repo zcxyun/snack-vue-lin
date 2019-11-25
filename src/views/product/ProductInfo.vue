@@ -60,8 +60,8 @@
                 </el-option>
               </el-select>
             </el-form-item>
-             <el-form-item label="主题" prop="theme_id">
-              <el-select v-model="form.theme_id" placeholder="请选择主题">
+             <el-form-item label="主题" prop="theme_ids">
+              <el-select v-model="form.theme_ids" multiple placeholder="请选择主题">
                 <el-option
                   v-for="item in themes"
                   :key="item.id"
@@ -69,6 +69,29 @@
                   :value="item.id">
                 </el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item label="参数" prop="params">
+              <div class="block-box">
+                <i class="iconfont icon-jia plus" v-if="!form.params.length" @click="addParams"></i>
+                <el-row class="input-row" v-for="(item,index) in form.params" :key="index">
+                  <el-input
+                    v-model="item.name"
+                    placeholder="请输入产品参数名"
+                    size="medium"
+                    class="input-detail"
+                  ></el-input>
+                  <el-input
+                    v-model="item.detail"
+                    placeholder="请输入产品参数值"
+                    size="medium"
+                    class="input-detail"
+                    ></el-input>
+                  <div class="function">
+                    <i class="iconfont icon-jian1 minus" @click="removeParams(index)"></i>
+                    <i class="iconfont icon-jia plus" v-if="index === form.params.length-1" @click="addParams"></i>
+                  </div>
+                </el-row>
+              </div>
             </el-form-item>
             <el-form-item label="价格" prop="price_str">
               <el-input
@@ -86,7 +109,6 @@
                 placeholder="请填写库存"
               ></el-input>
             </el-form-item>
-
             <el-form-item class="submit">
               <el-button type="primary" @click="submitForm('form')">保 存</el-button>
               <el-button @click="resetForm('form')">重 置</el-button>
@@ -121,10 +143,11 @@ export default {
       form: {
         name: '',
         category_id: '',
-        theme_id: '',
+        theme_ids: [],
         summary: '',
         price_str: '',
         stock: '',
+        params: [],
       },
       originInfo: null,
       rules: {
@@ -135,7 +158,7 @@ export default {
         category_id: [
           { required: true, message: '请选择分类', trigger: 'change' },
         ],
-        theme_id: [
+        theme_ids: [
           { required: true, message: '请选择主题', trigger: 'change' },
         ],
         summary: [
@@ -171,6 +194,12 @@ export default {
   },
   methods: {
     async initData() {
+      try {
+        this.categories = await category.getAll()
+        this.themes = await theme.getAll()
+      } catch (err) {
+        console.log(err)
+      }
       if (this.action === 'edit' && this.editId) {
         this.loading = true
         try {
@@ -180,12 +209,6 @@ export default {
           console.log(err)
         }
         this.loading = false
-      }
-      try {
-        this.categories = await category.getAll()
-        this.themes = await theme.getAll()
-      } catch (err) {
-        console.log(err)
       }
     },
     setInfo() {
@@ -244,6 +267,15 @@ export default {
     },
     back() {
       this.$emit('edit-back')
+    },
+    addParams() {
+      this.form.params.push({
+        text: '',
+        type: 'plus',
+      })
+    },
+    removeParams(index) {
+      this.form.params.splice(index, 1)
     },
   },
 }

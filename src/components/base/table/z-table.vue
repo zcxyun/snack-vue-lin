@@ -73,10 +73,10 @@
                   <el-image
                     :key="column.label"
                     v-if="column.isImage"
-                    :src="row[column.prop].value"
+                    :src="row[column.prop]"
                     fit="contain"
                     class="summary-img"
-                    @click.native="onImage(row[column.prop].value)">
+                    @click.native="onImage(row[column.prop])">
                   </el-image>
                 </template>
                 <el-form label-position="right" class="table-expand" size="mini">
@@ -103,9 +103,9 @@
               :width="column.width ? column.width : ''">
               <template #default="{row}">
                 <el-switch
-                  v-model="row[column.prop].value"
+                  v-model="row[column.prop]"
                   active-color="#3963bc"
-                  @change="onSwitch(row, row[column.prop].value)"
+                  @change="onSwitch(row, row[column.prop])"
                 ></el-switch>
               </template>
             </el-table-column>
@@ -118,10 +118,24 @@
               :width="column.width ? column.width : ''">
               <template #default="{row}">
                 <el-image
-                  :src="row[column.prop].value"
+                  :src="row[column.prop]"
                   fit="contain"
-                  @click.native="onImage(row[column.prop].value)"
+                  @click.native="onImage(row[column.prop])"
                   ></el-image>
+              </template>
+            </el-table-column>
+            <!-- 标签列 -->
+            <el-table-column
+              :key="column.label"
+              v-else-if="column.isTag"
+              :label="column.label"
+              :fixed="column.fixed ? column.fixed : false"
+              :width="column.width ? column.width : ''">
+              <template #default="{row}">
+                <template v-if="row[column.prop].length">
+                  <el-tag v-for="item in row[column.prop]" :key="item.id">{{item.name}}</el-tag>
+                </template>
+                <template v-else><el-tag type="info">暂无数据</el-tag></template>
               </template>
             </el-table-column>
             <!-- 单元格编辑 -->
@@ -137,9 +151,9 @@
               <template #default="{ row }">
                 <div v-if="!row[column.prop].editFlag" class="table-edit">
                   <div @click="onCellEdit(row, column)" class="content">{{ row[column.prop].value || '暂无数据' }}</div>
-                  <div class="cell-icon" @click="onCellEdit(row, column)" v-if="operate">
+                  <!-- <div class="cell-icon" @click="onCellEdit(row, column)" v-if="operate">
                     <i class="el-icon-edit"></i>
-                  </div>
+                  </div> -->
                 </div>
                 <div v-else class="table-edit">
                   <el-input v-model="row[column.prop].value"
@@ -250,8 +264,8 @@ export default {
         data.forEach((item) => {
           const tempItem = item
           this.tableColumn.forEach((column) => {
-            const { prop } = column
-            if (prop in tempItem) {
+            const { prop, isText } = column
+            if (prop in tempItem && isText) {
               tempItem[prop] = {
                 value: tempItem[prop],
                 editFlat: false,
@@ -260,6 +274,7 @@ export default {
           })
         })
       }
+      // console.log(data)
       return data
     },
   },
@@ -278,8 +293,8 @@ export default {
       if (toString.call(data) === '[object Object]') {
         const res = utils.deepClone(data)
         this.tableColumn.forEach((column) => {
-          const { prop } = column
-          if (prop in res) {
+          const { prop, isText } = column
+          if (prop in res && isText) {
             res[prop] = res[prop].value
           }
         })
@@ -402,7 +417,9 @@ export default {
     },
     // 预览图片
     onImage(image) {
-      this.$imagePreview({ images: [image] })
+      if (typeof image === 'string' && image) {
+        this.$imagePreview({ images: [image] })
+      }
     },
   },
 

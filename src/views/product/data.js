@@ -15,9 +15,9 @@ export const tableColumn = [  // eslint-disable-line
     prop: 'stock', label: '库存', width: 170, isText: true,
   },
   {
-    prop: 'category', label: '分类', width: 170, isText: true,
+    prop: 'category', label: '分类', width: 170, isTag: true,
   },
   {
-    prop: 'theme', label: '主题', width: 170, isText: true,
+    prop: 'themes', label: '主题', width: 170, isTag: true,
   },
 ]
