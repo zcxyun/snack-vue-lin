@@ -17,6 +17,11 @@ class Category {
     return res
   }
 
+  async getAllWithProducts() {
+    const res = await get('cms/category/all/products')
+    return res
+  }
+
   async getPaginate(page = 0, count = 10, q = '') {
     const info = { page, count }
     if (q) {

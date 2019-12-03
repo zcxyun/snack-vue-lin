@@ -9,7 +9,7 @@
         <div class="header-right">
           <el-dropdown style="margin-right: 20px;" v-if="showSearchTypes" @command="chooseSearchType">
             <el-button type="primary">
-              {{currentSearchType}}<i class="el-icon-arrow-down el-icon--right"></i>
+              {{searchTypes[currentSearchType] || '暂无搜索类型'}}<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
@@ -130,10 +130,15 @@
               v-else-if="column.isTag"
               :label="column.label"
               :fixed="column.fixed ? column.fixed : false"
-              :width="column.width ? column.width : ''">
+              :width="column.width ? column.width : ''"
+              show-overflow-tooltip>
               <template #default="{row}">
-                <template v-if="row[column.prop].length">
-                  <el-tag v-for="item in row[column.prop]" :key="item.id">{{item.name}}</el-tag>
+                <template v-if="typeof row[column.prop] === 'string'">
+                  <el-tag>{{row[column.prop]}}</el-tag>
+                </template>
+                <template v-else-if="Array.isArray(row[column.prop])">
+                  <el-tag v-for="(item, index) in row[column.prop]" :key="index">{{item}}</el-tag>
+                  <!-- <el-tag>{{row[column.prop][0] + (row[column.prop].length > 1 ? '...' : '')}}</el-tag> -->
                 </template>
                 <template v-else><el-tag type="info">暂无数据</el-tag></template>
               </template>
@@ -150,7 +155,8 @@
             >
               <template #default="{ row }">
                 <div v-if="!row[column.prop].editFlag" class="table-edit">
-                  <div @click="onCellEdit(row, column)" class="content">{{ row[column.prop].value || '暂无数据' }}</div>
+                  <div @click="onCellEdit(row, column)" class="content" v-if="row[column.prop].value">{{row[column.prop].value}}</div>
+                  <template v-else><el-tag type="info">暂无数据</el-tag></template>
                   <!-- <div class="cell-icon" @click="onCellEdit(row, column)" v-if="operate">
                     <i class="el-icon-edit"></i>
                   </div> -->
@@ -328,7 +334,6 @@ export default {
 
     // 单元格编辑
     onCellEdit(row, column) {
-      // 没有输入操作列, 单元格不可编辑
       if (!this.operate) {
         return
       }
