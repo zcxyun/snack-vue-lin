@@ -75,7 +75,7 @@ export default {
     async _getSearchTypes() {
       try {
         const searchTypes = await bannerItem.getAllTypes()
-        searchTypes.forEach(type => {
+        searchTypes.forEach((type) => {
           this.searchTypes[type.id] = type.name
         })
       } catch (err) {

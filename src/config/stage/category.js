@@ -3,7 +3,7 @@ const categoryRouter = {
   name: null,
   title: '分类管理',
   type: 'folder', // 类型: folder, tab, view
-  icon: 'iconfont icon-tushuguanli',
+  icon: 'iconfont icon-appstore',
   filePath: 'views/category/', // 文件路径
   order: null,
   inNav: true,
@@ -15,7 +15,7 @@ const categoryRouter = {
       route: '/category/add',
       filePath: 'views/category/CategoryAdd.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-plus-square',
     },
     {
       title: '分类列表',
@@ -24,7 +24,7 @@ const categoryRouter = {
       route: '/category/list',
       filePath: 'views/category/CategoryList.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-detail',
     },
   ],
 }

@@ -6,6 +6,7 @@ import categoryConfig from './category'
 import themeConfig from './theme'
 import memberConfig from './member'
 import bannerConfig from './banner'
+import orderConfig from './order'
 import Utils from '@/lin/utils/util'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -47,6 +48,7 @@ let homeRouter = [
   themeConfig,
   memberConfig,
   bannerConfig,
+  orderConfig,
 ]
 
 const plugins = [...pluginsConfig]

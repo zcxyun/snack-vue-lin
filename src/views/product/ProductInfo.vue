@@ -109,6 +109,15 @@
                 placeholder="请填写库存"
               ></el-input>
             </el-form-item>
+            <el-form-item label="产品描述图" prop="image">
+              <upload-imgs
+                ref="uploadDescEle"
+                :value="descImgInitData"
+                :rules="imgRules"
+                multiple
+                sortable
+              />
+            </el-form-item>
             <el-form-item class="submit">
               <el-button type="primary" @click="submitForm('form')">保 存</el-button>
               <el-button @click="resetForm('form')">重 置</el-button>
@@ -179,6 +188,7 @@ export default {
         minHeight: 100,
       },
       imgInitData: [],
+      descImgInitData: [],
       loading: false,
       categories: [],
       themes: [],
@@ -226,6 +236,17 @@ export default {
           display: origin.image,
         })
       }
+      if (Array.isArray(origin.desc_imgs) && origin.desc_imgs.length > 0) {
+        this.descImgInitData.splice(0)
+        origin.desc_imgs.sort((a, b) => a.order - b.order)
+        origin.desc_imgs.forEach((item) => {
+          this.descImgInitData.push({
+            id: item.img_id,
+            imgId: item.img_id,
+            display: item.image,
+          })
+        })
+      }
     },
     async submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
@@ -234,12 +255,22 @@ export default {
         }
         try {
           const imgData = await this.$refs.uploadEle.getValue()
+          const descImgData = await this.$refs.uploadDescEle.getValue()
           const noImgData = (Array.isArray(imgData) && imgData.length === 0) || !imgData
+          // const noDescImgData = (Array.isArray(descImgData) && descImgData.length === 0) || !descImgData
           if (noImgData) {
             this.$message.error('还没有上传主图文件或图片不符合规则')
             return
           }
+          // if (noDescImgData) {
+          //   this.$message.error('还没有上传产品描述图文件或图片不符合规则')
+          //   return
+          // }
           const data = Object.assign(this.form, { img_id: imgData[0].imgId })
+          if (Array.isArray(descImgData) && descImgData.length !== 0) {
+            data.desc_img_ids = descImgData.map((item) => item.imgId)
+          }
+          // console.log(data.desc_img_ids)
           let res = null
           if (this.editId) {
             res = await product.edit(this.editId, data)

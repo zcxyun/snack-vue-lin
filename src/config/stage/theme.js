@@ -3,7 +3,7 @@ const themeRouter = {
   name: null,
   title: '主题管理',
   type: 'folder', // 类型: folder, tab, view
-  icon: 'iconfont icon-tushuguanli',
+  icon: 'iconfont icon-gold',
   filePath: 'views/theme/', // 文件路径
   order: null,
   inNav: true,
@@ -15,7 +15,7 @@ const themeRouter = {
       route: '/theme/add',
       filePath: 'views/theme/ThemeAdd.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-plus-square',
     },
     {
       title: '主题列表',
@@ -24,7 +24,7 @@ const themeRouter = {
       route: '/theme/list',
       filePath: 'views/theme/ThemeList.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-detail',
     },
   ],
 }

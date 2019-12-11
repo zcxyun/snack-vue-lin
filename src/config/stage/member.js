@@ -3,7 +3,7 @@ const memberRouter = {
   name: null,
   title: '会员管理',
   type: 'folder', // 类型: folder, tab, view
-  icon: 'iconfont icon-tushuguanli',
+  icon: 'iconfont icon-user',
   filePath: 'views/member/', // 文件路径
   order: null,
   inNav: true,
@@ -15,7 +15,16 @@ const memberRouter = {
       route: '/member/list',
       filePath: 'views/member/MemberList.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-detail',
+    },
+    {
+      title: '会员地址列表',
+      type: 'view',
+      name: 'memberAdressList',
+      route: '/member/address/list',
+      filePath: 'views/member/MemberAddressList.vue',
+      inNav: true,
+      icon: 'iconfont icon-location',
     },
   ],
 }
