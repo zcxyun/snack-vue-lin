@@ -34,6 +34,7 @@
 import product from '@/models/product.js'
 import ProductInfo from './ProductInfo'
 import { tableColumn } from './data.js'
+import Config from '@/config'
 import ZTable from '@/components/base/table/z-table'
 
 export default {
@@ -55,7 +56,7 @@ export default {
       // 分页相关
       // refreshPagination: true, // 页数增加的时候，因为缓存的缘故，需要刷新Pagination组件
       currentPage: 1, // 默认获取第一页的数据
-      pageCount: 2, // 每页10条数据
+      pageCount: Config.pageSize, // 每页10条数据
       total: 0, // 分组内的用户总数
     }
   },
@@ -89,6 +90,7 @@ export default {
     // 单元格保存
     async onCellSave(data) {
       try {
+        data.stock = Number(data.stock)
         const res = await product.edit(data.id, data)
         if (res && res.error_code === 0) {
           this.$message.success(`${res.msg}`)

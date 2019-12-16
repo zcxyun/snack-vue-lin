@@ -23,7 +23,7 @@
             <el-form-item label="名字" prop="name">
               <el-input
                 size="medium"
-                v-model.trim="form.name"
+                v-model="form.name"
                 placeholder="请填写产品名"
                 maxlength="30"
                 clearable
@@ -167,9 +167,9 @@ export default {
         category_id: [
           { required: true, message: '请选择分类', trigger: 'change' },
         ],
-        theme_ids: [
-          { required: true, message: '请选择主题', trigger: 'change' },
-        ],
+        // theme_ids: [
+        //   { required: true, message: '请选择主题', trigger: 'change' },
+        // ],
         summary: [
           { required: true, message: '请输入摘要', trigger: 'blur' }, // eslint-disable-line
           { min: 1, max: 50, message: '摘要长度是1 - 50个字符', trigger: 'blur' },  // eslint-disable-line
