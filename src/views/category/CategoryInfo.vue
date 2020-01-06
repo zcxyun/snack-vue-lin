@@ -38,6 +38,14 @@
                 :max-num="1"
               />
             </el-form-item>
+            <el-form-item label="小图" prop="mini_image">
+              <upload-imgs
+                ref="uploadMiniEle"
+                :value="miniImgInitData"
+                :rules="miniImgRules"
+                :max-num="1"
+              />
+            </el-form-item>
             <el-form-item label="摘要" prop="summary">
               <el-input
                 size="medium"
@@ -94,11 +102,16 @@ export default {
           { min: 1, max: 50, message: '摘要长度是1 - 50个字符', trigger: 'blur' },  // eslint-disable-line
         ],
       },
+      imgInitData: [],
       imgRules: {
         minWidth: 100,
         minHeight: 100,
       },
-      imgInitData: [],
+      miniImgInitData: [],
+      miniImgRules: {
+        minWidth: 100,
+        minHeight: 100,
+      },
       loading: false,
     }
   },
@@ -126,7 +139,7 @@ export default {
     setInfo() {
       const origin = this.originInfo  // eslint-disable-line
       Object.keys(origin).forEach((key) => {
-        if (key in this.form) {
+        if (this.form.hasOwnProperty(key)) {
           this.form[key] = origin[key]
         }
       })
@@ -138,6 +151,14 @@ export default {
           display: origin.image,
         })
       }
+      if (origin.mini_img_id && origin.mini_image) {
+        this.miniImgInitData.splice(0)
+        this.miniImgInitData.push({
+          id: origin.mini_img_id,
+          imgId: origin.mini_img_id,
+          display: origin.mini_image,
+        })
+      }
     },
     async submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
@@ -146,12 +167,21 @@ export default {
         }
         try {
           const imgData = await this.$refs.uploadEle.getValue()
+          const miniImgData = await this.$refs.uploadMiniEle.getValue()
           const noImgData = (Array.isArray(imgData) && imgData.length === 0) || !imgData
+          const noMiniImgData = (Array.isArray(miniImgData) && miniImgData.length === 0) || !miniImgData
           if (noImgData) {
-            this.$message.error('还没有上传主图文件或图片不符合规则')
+            this.$message.error('还没有上传主图或图片不符合规则')
             return
           }
-          const data = Object.assign(this.form, { img_id: imgData[0].imgId })
+          if (noMiniImgData) {
+            this.$message.error('还没有上传小图或图片不符合规则')
+            return
+          }
+          const data = Object.assign(this.form, {
+            img_id: imgData[0].imgId,
+            mini_img_id: miniImgData[0].imgId,
+          })
           let res = null
           if (this.editId) {
             res = await category.edit(this.editId, data)
@@ -175,6 +205,7 @@ export default {
       } else {
         this.$refs[formName].resetFields()
         this.imgInitData.splice(0)
+        this.miniImgInitData.splice(0)
       }
     },
     back() {

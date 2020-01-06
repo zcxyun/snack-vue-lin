@@ -93,6 +93,14 @@
                 </el-row>
               </div>
             </el-form-item>
+            <el-form-item label="旧价格" prop="old_price_str">
+              <el-input
+                size="medium"
+                type="number"
+                v-model.trim="form.old_price_str"
+                placeholder="请填写旧价格"
+              ></el-input>
+            </el-form-item>
             <el-form-item label="价格" prop="price_str">
               <el-input
                 size="medium"
@@ -154,6 +162,7 @@ export default {
         category_id: '',
         theme_ids: [],
         summary: '',
+        old_price_str: '',
         price_str: '',
         stock: '',
         params: [],
@@ -174,9 +183,12 @@ export default {
           { required: true, message: '请输入摘要', trigger: 'blur' }, // eslint-disable-line
           { min: 1, max: 50, message: '摘要长度是1 - 50个字符', trigger: 'blur' },  // eslint-disable-line
         ],
+        old_price_str: [
+          { pattern: /^\d+\.\d{2}$/, message: '价格格式类似: 1.20', trigger: 'blur' },
+        ],
         price_str: [
           { required: true, message: '请输入产品价格', trigger: 'blur' },
-          { pattern: /^\d+\.\d{2}$/, message: '价格格式类似: 1.20' },
+          { pattern: /^\d+\.\d{2}$/, message: '价格格式类似: 1.20', trigger: 'blur' },
         ],
         stock: [
           { required: true, message: '请输入库存', trigger: 'blur' },

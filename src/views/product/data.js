@@ -9,6 +9,9 @@ export const tableColumn = [  // eslint-disable-line
     prop: 'summary', label: '摘要', width: 220, isText: true,
   },
   {
+    prop: 'old_price_str', label: '旧价格', width: 170, isText: true,
+  },
+  {
     prop: 'price_str', label: '价格', width: 170, isText: true,
   },
   {
