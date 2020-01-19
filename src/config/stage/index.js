@@ -1,6 +1,6 @@
 import adminConfig from './admin'
 // import bookConfig from './book' // 引入图书管理路由文件
-import pluginsConfig from './plugins'
+// import pluginsConfig from './plugins'
 import productConfig from './product'
 import categoryConfig from './category'
 import themeConfig from './theme'
@@ -12,7 +12,7 @@ import Utils from '@/lin/utils/util'
 // eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
   {
-    title: '林间有风',
+    title: '首页',
     type: 'view',
     name: Symbol('about'),
     route: '/about',
@@ -51,7 +51,8 @@ let homeRouter = [
   orderConfig,
 ]
 
-const plugins = [...pluginsConfig]
+// const plugins = [...pluginsConfig]
+const plugins = []
 
 // 筛除已经被添加的插件
 function filterPlugin(data) {
