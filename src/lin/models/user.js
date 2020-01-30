@@ -1,9 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import {
-  post,
-  get,
-  put,
-} from '@/lin/plugins/axios'
+import { post, get, put } from '@/lin/plugins/axios' // eslint-disable-line
 import { saveTokens, saveAccessToken } from '../utils/token'
 
 const SUPER_VALUE = 2

@@ -139,7 +139,7 @@ _axios.interceptors.response.use(async (res) => {
       return
     }
     console.log('msg', msg)
-    // 本次请求添加 params 参数：showBackend 为 true, 弹出后端返回错误信息
+    // 本次请求添加 params 参数：showFrontend 为 true 时, 弹出前端返回错误信息
     if (params && params.showFrontend) {
       const errorArr = Object.entries(ErrorCode).filter(v => v[0] === error_code.toString())
       // 匹配到前端自定义的错误码
@@ -150,7 +150,7 @@ _axios.interceptors.response.use(async (res) => {
           message = ErrorCode['777']
         }
       }
-    } else { // 弹出前端自定义错误信息
+    } else { // 弹出后端自定义错误信息
       if (Object.prototype.toString.call(msg) === '[object Object]') {  // eslint-disable-line
         Object.keys(msg).forEach((item, index) => {
           if (index === 0) {

@@ -90,7 +90,7 @@ export default {
     // 单元格保存
     async onCellSave(data) {
       try {
-        data.stock = Number(data.stock)
+        data.stock = Number(data.stock)   // eslint-disable-line
         const res = await product.edit(data.id, data)
         if (res && res.error_code === 0) {
           this.$message.success(`${res.msg}`)

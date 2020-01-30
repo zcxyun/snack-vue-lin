@@ -139,7 +139,7 @@ export default {
     setInfo() {
       const origin = this.originInfo  // eslint-disable-line
       Object.keys(origin).forEach((key) => {
-        if (this.form.hasOwnProperty(key)) {
+        if (key in this.form) {
           this.form[key] = origin[key]
         }
       })

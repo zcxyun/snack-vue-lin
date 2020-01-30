@@ -280,7 +280,7 @@ export default {
           // }
           const data = Object.assign(this.form, { img_id: imgData[0].imgId })
           if (Array.isArray(descImgData) && descImgData.length !== 0) {
-            data.desc_img_ids = descImgData.map((item) => item.imgId)
+            data.desc_img_ids = descImgData.map(item => item.imgId)
           }
           // console.log(data.desc_img_ids)
           let res = null
