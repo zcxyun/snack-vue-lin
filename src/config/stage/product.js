@@ -16,6 +16,7 @@ const productRouter = {
       filePath: 'views/product/ProductAdd.vue',
       inNav: true,
       icon: 'iconfont icon-plus-square',
+      right: ['创建商品'],
     },
     {
       title: '产品列表',
@@ -25,6 +26,7 @@ const productRouter = {
       filePath: 'views/product/ProductList.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
+      right: ['分页查询所有商品'],
     },
   ],
 }

@@ -16,6 +16,7 @@ const categoryRouter = {
       filePath: 'views/category/CategoryAdd.vue',
       inNav: true,
       icon: 'iconfont icon-plus-square',
+      right: ['创建分类'],
     },
     {
       title: '分类列表',
@@ -25,6 +26,7 @@ const categoryRouter = {
       filePath: 'views/category/CategoryList.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
+      right: ['分页查询所有分类'],
     },
   ],
 }

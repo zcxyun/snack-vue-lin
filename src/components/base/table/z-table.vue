@@ -63,7 +63,6 @@
           v-loading="loading"
           highlight-current-row
           stripe
-          max-height="420"
         >
           <!-- 展示摘要 -->
           <el-table-column type="expand" v-if="showExtend">

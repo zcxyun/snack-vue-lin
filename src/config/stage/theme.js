@@ -16,6 +16,7 @@ const themeRouter = {
       filePath: 'views/theme/ThemeAdd.vue',
       inNav: true,
       icon: 'iconfont icon-plus-square',
+      right: ['创建主题'],
     },
     {
       title: '主题列表',
@@ -25,6 +26,7 @@ const themeRouter = {
       filePath: 'views/theme/ThemeList.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
+      right: ['分页查询所有主题'],
     },
   ],
 }

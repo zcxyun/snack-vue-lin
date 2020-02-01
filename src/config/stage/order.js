@@ -16,6 +16,7 @@ const orderRouter = {
       filePath: 'views/order/OrderList.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
+      right: ['分页查询所有订单'],
     },
   ],
 }

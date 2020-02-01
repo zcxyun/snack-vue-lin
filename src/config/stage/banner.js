@@ -26,6 +26,7 @@ const bannerRouter = {
           filePath: 'views/banner/BannerList.vue',
           inNav: true,
           icon: 'iconfont icon-detail',
+          right: ['分页查询所有横幅'],
         },
         {
           title: '添加横幅',
@@ -35,6 +36,7 @@ const bannerRouter = {
           icon: 'iconfont icon-plus-square',
           name: 'bannerAdd',
           filePath: 'views/banner/BannerAdd.vue',
+          right: ['创建横幅'],
         },
       ],
     },
@@ -55,6 +57,7 @@ const bannerRouter = {
           filePath: 'views/banner-item/BannerItemList.vue',
           title: '横幅子类列表',
           icon: 'iconfont icon-detail',
+          right: ['分页查询所有横幅子项'],
         },
         {
           route: '/banner-item/add',
@@ -64,6 +67,7 @@ const bannerRouter = {
           inNav: true,
           title: '添加横幅子类',
           icon: 'iconfont icon-plus-square',
+          right: ['创建横幅子项'],
         },
       ],
     },

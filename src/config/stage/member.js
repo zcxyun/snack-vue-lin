@@ -16,15 +16,17 @@ const memberRouter = {
       filePath: 'views/member/MemberList.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
+      right: ['分页查询所有C端会员'],
     },
     {
-      title: '会员地址列表',
+      title: '收货地址列表',
       type: 'view',
       name: 'memberAdressList',
       route: '/member/address/list',
       filePath: 'views/member/MemberAddressList.vue',
       inNav: true,
       icon: 'iconfont icon-location',
+      right: ['分页查询C端会员收货地址'],
     },
   ],
 }

@@ -2,7 +2,6 @@
   <div>
     <z-table
       :loading="loading"
-      showExtend
       showSearch
       :title="title"
       :searchPlaceHolder="searchPlaceHolder"
@@ -28,8 +27,8 @@ export default {
   },
   data() {
     return {
-      title: '会员列表',
-      searchPlaceHolder: '请输入会员名',
+      title: '收货地址列表',
+      searchPlaceHolder: '请输入会员名或收获人姓名',
       tableData: [],
       addressTableColumn,
       loading: false,

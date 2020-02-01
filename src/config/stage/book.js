@@ -7,6 +7,7 @@ const bookRouter = {
   filePath: 'views/book/', // 文件路径
   order: null,
   inNav: true,
+  right: ['超级管理员独有权限'],
   children: [
     {
       title: '添加图书',

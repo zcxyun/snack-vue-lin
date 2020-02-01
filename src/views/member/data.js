@@ -21,10 +21,19 @@ export const tableColumn = [  // eslint-disable-line
 
 export const addressTableColumn = [
   {
-    prop: 'userName', label: '收获人姓名', isText: true,
+    prop: 'member_avatar', label: '会员头像', width: 60, isImage: true,
   },
   {
-    prop: 'telNumber', label: '收获人电话', isText: true,
+    prop: 'member_name', label: '会员名', isText: true,
+  },
+  {
+    prop: 'member_openid', label: '微信openid', isText: true,
+  },
+  {
+    prop: 'userName', label: '收货人姓名', isText: true,
+  },
+  {
+    prop: 'telNumber', label: '收货人电话', isText: true,
   },
   {
     prop: 'provinceName', label: '省', isText: true,
@@ -39,6 +48,9 @@ export const addressTableColumn = [
     prop: 'detailInfo', label: '详细地址', isText: true,
   },
   {
-    prop: 'is_default', label: '默认地址', isText: true,
+    prop: 'postalCode', label: '邮编', isText: true,
+  },
+  {
+    prop: 'nationalCode', label: '国家码', isText: true,
   },
 ]
