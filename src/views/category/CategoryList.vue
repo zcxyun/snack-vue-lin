@@ -5,6 +5,7 @@
       :loading="loading"
       showExtend
       showSearch
+      cellOperate
       :title="title"
       :searchPlaceHolder="searchPlaceHolder"
       :tableData="tableData"

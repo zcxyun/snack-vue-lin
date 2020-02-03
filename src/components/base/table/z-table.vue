@@ -2,28 +2,33 @@
   <div>
     <!-- 列表页面 -->
     <div class="tableSample">
-      <div class="header">
-        <div class="header-left">
-          <p class="title">{{title}}</p>
-        </div>
-        <div class="header-right">
-          <el-dropdown style="margin-right: 20px;" v-if="showSearchTypes" @command="chooseSearchType">
-            <el-button type="primary">
-              {{searchTypes[currentSearchType] || '暂无搜索类型'}}<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-              v-for="(value, key) in searchTypes"
-              :command="key"
-              :key="key">{{value}}</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <lin-search @query="onQueryChange" :placeholder="searchPlaceHolder" v-if="showSearch"/>
-          <div style="margin-left:30px">
-            <el-button type="primary" @click="dialogTableVisible=!dialogTableVisible">列操作</el-button>
+      <sticky-top>
+        <div class="header">
+          <div class="header-left">
+            <p class="title">{{title}}</p>
+          </div>
+          <div class="header-right">
+            <lin-date-picker
+              @dateChange="handleDateChange"
+              ref="searchDate" class="date" v-if="showDatePicker"></lin-date-picker>
+            <el-dropdown style="margin-right: 20px;" v-if="showSearchTypes" @command="chooseSearchType">
+              <el-button type="primary">
+                {{searchTypes[currentSearchType] || '暂无搜索类型'}}<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                v-for="(value, key) in searchTypes"
+                :command="key"
+                :key="key">{{value}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+            <lin-search @query="onQueryChange" :placeholder="searchPlaceHolder" v-if="showSearch"/>
+            <div style="margin-left:30px">
+              <el-button type="primary" @click="dialogTableVisible=!dialogTableVisible">列操作</el-button>
+            </div>
           </div>
         </div>
-      </div>
+      </sticky-top>
       <div class="table-main">
         <el-dialog top="5vh" width="60%" :visible.sync="dialogTableVisible">
           <!-- 定制列 -->
@@ -153,34 +158,48 @@
               show-overflow-tooltip
             >
               <template #default="{ row }">
-                <div v-if="!row[column.prop].editFlag" class="table-edit">
-                  <div @click="onCellEdit(row, column)" class="content" v-if="row[column.prop].value">{{row[column.prop].value}}</div>
-                  <template v-else><el-tag type="info">暂无数据</el-tag></template>
-                  <!-- <div class="cell-icon" @click="onCellEdit(row, column)" v-if="operate">
-                    <i class="el-icon-edit"></i>
-                  </div> -->
-                </div>
-                <div v-else class="table-edit">
-                  <el-input v-model="row[column.prop].value"
-                    :autofocus="true"
-                    clearable
-                    :ref="column.prop + '-' + row.id"
-                  ></el-input>
-                  <div class="cell-icon-edit">
-                    <div class="cell-save" @click="onCellSave(row, column)">
-                      <i class="el-icon-check"></i>
-                    </div>
-                    <div class="cell-cancel" @click="onCellCancel(row, column)">
-                      <i class="el-icon-close"></i>
+                <template v-if="row[column.prop]">
+                  <div v-if="!row[column.prop].editFlag" class="table-edit">
+                    <div @click="onCellEdit(row, column)" class="content" v-if="row[column.prop].value !== ''">{{row[column.prop].value}}</div>
+                    <template v-else><el-tag type="info">暂无数据</el-tag></template>
+                    <!-- <div class="cell-icon" @click="onCellEdit(row, column)" v-if="operate">
+                      <i class="el-icon-edit"></i>
+                    </div> -->
+                  </div>
+                  <div v-else class="table-edit">
+                    <el-input v-model="row[column.prop].value"
+                      :autofocus="true"
+                      clearable
+                      :ref="column.prop + '-' + row.id"
+                    ></el-input>
+                    <div class="cell-icon-edit">
+                      <div class="cell-save" @click="onCellSave(row, column)">
+                        <i class="el-icon-check"></i>
+                      </div>
+                      <div class="cell-cancel" @click="onCellCancel(row, column)">
+                        <i class="el-icon-close"></i>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </template>
+                <el-tag type="info" v-else>暂无数据</el-tag>
               </template>
             </el-table-column> -->
           </template>
           <!-- 操作列 -->
           <el-table-column label="操作" fixed="right" width="174" v-if="operate">
-            <template #default="{row}">
+            <template #default="scope" v-if="customOperate">
+              <el-button
+                v-for="(item,index) in customOperateList"
+                :type="item.type"
+                plain
+                :key="index"
+                size="mini"
+                v-auth="{auth:item.auth ? item.auth : '', type: 'disabled'}"
+                @click.native.prevent.stop="buttonMethods(item.func, scope.$index, scope.row)">{{item.name}}
+              </el-button>
+            </template>
+            <template #default="{row}" v-else>
               <template v-if="row.delete_time">
                 <el-tooltip effect="dark" content="上架" placement="top">
                   <el-button  type="warning" @click="onShow(row.id)" icon="el-icon-unlock" size="mini"></el-button>
@@ -218,24 +237,34 @@
 
 <script>
 import LinSearch from '@/components/base/search/lin-search'
+import LinDatePicker from '@/components/base/date-picker/lin-date-picker'
 import utils from '@/lin/utils/util.js'
 
 export default {
   components: {
-    LinSearch,
+    LinSearch, LinDatePicker,
   },
   props: {
+    // 页面标题
     title: String,
+    // 日期选择器相关
+    showDatePicker: Boolean,
+    // 搜索相关
     showSearch: Boolean,
     showSearchTypes: Boolean,
     searchTypes: Object,
     currentSearchType: String,
     searchPlaceHolder: String,
+    // 表格相关
     loading: Boolean,
     tableData: Array,
     tableColumn: Array,
-    operate: Boolean,
     showExtend: Boolean,
+    // 操作表格相关
+    operate: Boolean,
+    customOperate: Boolean,
+    cellOperate: Boolean,
+    customOperateList: Array,
     // 分页相关
     currentPage: Number, // 默认获取第一页的数据
     pageCount: Number, // 每页10条数据
@@ -307,6 +336,26 @@ export default {
       }
     },
 
+    // 开发者自定义的函数
+    buttonMethods(func, index, row) {
+      const _this = this
+      const { methods } = this.$options
+      methods[func](_this, index, row)
+    },
+
+    operateOne(_this, index, row) {
+      _this.$emit('operate-one', { index, row })
+    },
+
+    operateTwo(_this, index, row) {
+      _this.$emit('operate-two', { index, row })
+    },
+
+    handleDateChange(date) {
+      // console.log(date)
+      this.$emit('date-change', date)
+    },
+
     onRowDbClick(val) {
       // console.log(val)
       this.$emit('row-db-click', val)
@@ -333,7 +382,7 @@ export default {
 
     // 单元格编辑
     onCellEdit(row, column) {
-      if (!this.operate) {
+      if (!this.cellOperate) {
         return
       }
       if (this.cellEditing === true) {
@@ -394,15 +443,6 @@ export default {
     async onCurrentChange(val) {
       this.$emit('page-change', val)
     },
-
-    // 操作列
-    // buttonMethods(func, index, row) {
-    //   const self = this
-    //   const { methods } = this.$options
-    //   if (func in methods) {
-    //     methods[func](self, index, row)
-    //   }
-    // },
     onEdit(id) {
       this.$emit('edit', id)
     },
@@ -487,6 +527,9 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .date {
+        margin-right: 20px;
+      }
     }
   }
 

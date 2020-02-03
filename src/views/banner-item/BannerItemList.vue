@@ -3,6 +3,7 @@
     <z-table
       v-if="!showEdit"
       :loading="loading"
+      showSearch
       showSearchTypes
       :title="title"
       :searchTypes="searchTypes"
@@ -15,7 +16,6 @@
       :pageCount="pageCount"
       :total="total"
       @choose-search-type="onChooseSearchType"
-      @cell-save="onCellSave"
       @page-change="onPageChange"
       @edit="onEdit"
       @remove="onRemove"
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       title: '横幅子项目列表',
-      searchPlaceHolder: '请输入横幅子项目名',
+      searchPlaceHolder: '请输入导向内容名称',
       // 编辑相关
       editId: 0,
       showEdit: false,
@@ -76,9 +76,10 @@ export default {
     async _getSearchTypes() {
       try {
         const searchTypes = await bannerItem.getAllTypes()
-        searchTypes.forEach((type) => {
-          this.searchTypes[type.id] = type.name
-        })
+        if (searchTypes) {
+          this.searchTypes = searchTypes
+          this.currentSearchType = Object.keys(searchTypes)[0].toString()
+        }
       } catch (err) {
         console.log(err)
       }
@@ -91,9 +92,11 @@ export default {
       const curSearchType = Number(this.currentSearchType)
       try {
         this.loading = true
-        const { total, models } = await bannerItem.getPaginate(page, count, q, curSearchType)
-        this.tableData = models
-        this.total = total
+        const res = await bannerItem.getPaginate(page, count, q, curSearchType)
+        if (res) {
+          this.tableData = res.models
+          this.total = res.total
+        }
       } catch (err) {
         this.tableData = []
         this.total = 0
