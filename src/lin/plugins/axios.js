@@ -133,12 +133,12 @@ _axios.interceptors.response.use(async (res) => {
         return
       }
     }
+    console.log(res.data)
     // 本次请求添加 params 参数：handleError 为 true，用户自己try catch，框架不做处理
     if (params && params.handleError) {
       reject(res.data)
       return
     }
-    console.log('msg', msg)
     // 本次请求添加 params 参数：showFrontend 为 true 时, 弹出前端返回错误信息
     if (params && params.showFrontend) {
       const errorArr = Object.entries(ErrorCode).filter(v => v[0] === error_code.toString())

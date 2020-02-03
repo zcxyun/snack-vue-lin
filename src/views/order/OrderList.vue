@@ -1,6 +1,7 @@
 <template>
   <div>
     <z-table
+      v-if="!showDetail"
       :loading="loading"
       showExtend
       showSearch
@@ -25,6 +26,11 @@
       @operate-two="onOperateTwo"
       @choose-search-type="onChooseSearchType"
     ></z-table>
+    <order-info
+      v-else
+      :editId="editId"
+      @back="back"
+    ></order-info>
   </div>
 </template>
 
@@ -33,13 +39,17 @@ import orderModel from '@/models/order.js'
 import { tableColumn, customOperateList } from './data.js'
 import Config from '@/config'
 import ZTable from '@/components/base/table/z-table'
+import OrderInfo from './OrderInfo'
 
 export default {
   components: {
     ZTable,
+    OrderInfo,
   },
   data() {
     return {
+      editId: 0,
+      showDetail: false,
       title: '订单列表',
       // 搜索相关
       searchPlaceHolder: '请输入订单号',
@@ -89,7 +99,6 @@ export default {
       } catch (err) {
         this.tableData = []
         this.total = 0
-        console.log(err)
       }
       this.loading = false
     },
@@ -124,11 +133,14 @@ export default {
         this.$message.success(res.msg)
         this._getTableData()
       }
-
     },
     // 订单详情
-    onOperateTwo({ index, row }) {
-
+    onOperateTwo({ row }) {
+      this.showDetail = true
+      this.editId = row.id
+    },
+    back() {
+      this.showDetail = false
     },
   },
 }

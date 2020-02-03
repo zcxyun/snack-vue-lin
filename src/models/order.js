@@ -5,6 +5,11 @@ import {
 } from '@/lin/plugins/axios'
 
 class Order {
+  async get(id) {
+    const order = get(`cms/order/get/${id}`)
+    return order
+  }
+
   async getPaginate(page = 0, count = 10, q = '', orderStatus = '', dateStart = '', dateEnd = '') {
     const info = { page, count }
     if (q) {
