@@ -44,13 +44,13 @@ let homeRouter = [
   },
   // bookConfig,
   adminConfig,
+  statConfig,
   productConfig,
   categoryConfig,
   themeConfig,
   memberConfig,
   bannerConfig,
   orderConfig,
-  statConfig,
 ]
 
 // const plugins = [...pluginsConfig]

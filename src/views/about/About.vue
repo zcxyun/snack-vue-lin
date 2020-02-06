@@ -66,7 +66,6 @@
 
 <script>
 import statModel from '@/models/stat.js'
-import { sleep } from '@/libs/utils.js'
 
 export default {
   data() {
@@ -79,13 +78,17 @@ export default {
       showProgress: false,
       orderChartOptions: {
         chart: {
-          type: 'bar',
+          type: 'column',
         },
         title: {
           text: '近一个月订单信息',
         },
+        tooltip: {
+          shared: true,
+        },
         xAxis: {
           categories: [],
+          labels: { step: 5 },
         },
         yAxis: [{
           title: {
@@ -114,8 +117,12 @@ export default {
         title: {
           text: '近一个月会员和访问信息',
         },
+        tooltip: {
+          shared: true,
+        },
         xAxis: {
           categories: [],
+          labels: { step: 5 },
         },
         yAxis: {
           title: {
@@ -123,7 +130,7 @@ export default {
           },
         },
         series: [{
-          name: '会员个数',
+          name: '会员新增个数',
           data: [],
         }, {
           name: '访问次数',
@@ -152,21 +159,22 @@ export default {
         this.orderChartOptions.xAxis.categories = res.dates
         this.orderChartOptions.series[0].data = res.orderCounts
         this.orderChartOptions.series[1].data = res.prices
+        this.orderChartOptions.xAxis.labels.step = Math.floor(res.dates.length / 8)
 
         this.memberChartOptions.xAxis.categories = res.dates
         this.memberChartOptions.series[0].data = res.memberCounts
         this.memberChartOptions.series[1].data = res.accesses
+        this.memberChartOptions.xAxis.labels.step = Math.floor(res.dates.length / 8)
       }
     },
     async stat() {
       try {
-        const dateSection = await statModel.getDateSection()
+        const dateSection = await statModel.getDateSectionForAll()
         if (dateSection && Array.isArray(dateSection)) {
           this.showProgress = true
           let i = 0
           for (const date_str of dateSection) {
-            await sleep(200)  // eslint-disable-line
-            const res = await statModel.stat(date_str)  // eslint-disable-line
+            const res = await statModel.statAll(date_str)  // eslint-disable-line
             if (res) {
               i++
               this.currentProgress = parseInt(i / dateSection.length * 100, 10)

@@ -3,7 +3,7 @@ const statRouter = {
   name: null,
   title: '统计管理',
   type: 'folder', // 类型: folder, tab, view
-  icon: 'iconfont icon-shopping',
+  icon: 'iconfont icon-tongji1',
   filePath: 'views/stat/', // 文件路径
   order: null,
   inNav: true,
@@ -28,11 +28,11 @@ const statRouter = {
       icon: 'iconfont icon-detail',
     },
     {
-      title: '访问统计',
+      title: '商品统计',
       type: 'view',
-      name: 'accessStat',
-      route: '/stat/access',
-      filePath: 'views/stat/AccessStat.vue',
+      name: 'productStat',
+      route: '/stat/product',
+      filePath: 'views/stat/ProductStat.vue',
       inNav: true,
       icon: 'iconfont icon-detail',
     },

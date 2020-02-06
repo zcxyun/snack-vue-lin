@@ -41,10 +41,10 @@
             <el-form-item label="导向类型" prop="type">
               <el-select v-model="form.type" placeholder="请选择导向类型" @change="onChangeType">
                 <el-option
-                  v-for="item in types"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
+                  v-for="(value, key) in types"
+                  :key="key"
+                  :label="value"
+                  :value="parseInt(key)">
                 </el-option>
               </el-select>
             </el-form-item>
